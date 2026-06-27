@@ -1,9 +1,11 @@
+import icon from "/icon-512.png";
+
 export default function Navbar() {
     return (
         <nav className="fixed w-full z-20 top-0 inset-s-0 mb-12">
             <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="#" className="flex items-center space-x-3">
-                    <img src="/icon-512.png" className="h-10" alt="Logo" />
+                    <img src={icon} className="h-10" alt="Logo" />
                     <span className="self-center text-xl font-bold text-cerulean whitespace-nowrap">Itinerarey</span>
                 </a>
                 <button data-collapse-toggle="navbar-default" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-body rounded-base md:hidden hover:bg-neutral-secondary-soft hover:text-heading focus:outline-none focus:ring-2 focus:ring-neutral-tertiary" aria-controls="navbar-default" aria-expanded="false">
