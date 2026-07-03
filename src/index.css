@@ -2,9 +2,13 @@
 
 @theme {
     --color-cerulean: #227c9d;
-    --color-accent-blue: #1943D3;
+    --color-accent-blue: #22649d;
     --color-ocean-mist: #17c3b2;
     --color-apricot: #ffcb77;
     --color-floral-white: #fef9ef;
     --color-grapefruit: #fe6d73;
+}
+
+html {
+    scroll-behavior: smooth;
 }
