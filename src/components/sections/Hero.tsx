@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import Globe, { type GlobeMethods } from 'react-globe.gl';
+import Globe from 'react-globe.gl';
 import earth from "../../assets/earth/earth.jpg";
 import heightmap from "../../assets/earth/heightmap.png";
 import herocities from "../../data/herocities.ts";
 import XSVG from '../../assets/icons/XSVG.tsx';
 
 export default function Hero() {
-    const globeEl = useRef<GlobeMethods | null>(null);
+    const globeEl = useRef<any>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [hoveredPoint, setHoveredPoint] = useState<any>(null);
     const [selectedPoint, setSelectedPoint] = useState<any>(null);
@@ -97,7 +97,7 @@ export default function Hero() {
                     pointRadius={(d: any) => (d === hoveredPoint ? 2 : 1)}
                     pointAltitude={0.01}
                     onPointHover={(point) => {
-                        setHoveredPoint(prev => prev === point ? prev : point);
+                        setHoveredPoint((prev: any) => prev === point ? prev : point);
                     }}
                     onPointClick={(point) => handlePointClick(point)}
                 />
