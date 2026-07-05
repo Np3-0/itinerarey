@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Navbar from "../partials/Navbar";
 
 export default function Planner() { 
 
@@ -10,8 +11,15 @@ export default function Planner() {
     });
 
     return (
-        <section className="w-full bg-cerulean">
-            Planner
-        </section>
+        <>
+            <Navbar showItems={false} />
+            <div className="w-full bg-cerulean min-h-screen flex flex-col items-center justify-start">
+                <h1 className="text-4xl font-bold text-white mt-12">Trip Info</h1>
+                <form>
+                    {/* Basic Info stuff */}
+                    
+                </form>
+            </div>
+        </>
     )
 }
