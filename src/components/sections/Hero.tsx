@@ -118,7 +118,7 @@ export default function Hero() {
                                 className="mt-4 rounded-lg shadow-md"
                             />
                             <button
-                                className="mt-4 bg-floral-white text-cerulean hover:bg-ocean-mist hover:text-white hover:scale-110 py-2 px-4 rounded-lg transition duration-300 font-semibold text-lg cursor-pointer"
+                                className="mt-4 bg-floral-white text-cerulean hover:bg-ocean-mist hover:text-floral-white hover:scale-110 py-2 px-4 rounded-lg transition duration-300 font-semibold text-lg cursor-pointer"
                                 onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${selectedPoint?.lat},${selectedPoint?.lng}`, '_blank')}
                             >
                                 Check it out!

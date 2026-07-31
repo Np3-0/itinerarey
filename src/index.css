@@ -12,3 +12,55 @@
 html {
     scroll-behavior: smooth;
 }
+
+calendar-range {
+    --cally-accent: #1f6aa5;
+    --cally-bg: #fffdf8;
+    --cally-text: #0d3b66;
+    --cally-selected: #1f6aa5;
+    --cally-selected-text: white;
+    --cally-hover: #dbeafe;
+
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    svg {
+        height: 16px;
+        width: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.5;
+    }
+
+    path {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+}
+
+calendar-month {
+    --color-accent: var(--color-accent-blue);
+
+    &::part(button) {
+        border-radius: 3px;
+    }
+
+    &::part(range-inner) {
+        border-radius: 0;
+        background-color: #2377b8;
+    }
+
+    &::part(range-start) {
+        border-start-end-radius: 0;
+        border-end-end-radius: 0;
+    }
+
+    &::part(range-end) {
+        border-start-start-radius: 0;
+        border-end-start-radius: 0;
+    }
+
+    &::part(range-start range-end) {
+        border-radius: 3px;
+    }
+}

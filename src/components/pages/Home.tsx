@@ -1,14 +1,17 @@
+import { useNavigate } from 'react-router-dom'
 import Hero from '../sections/Hero.tsx'
 import Navbar from '../partials/Navbar.tsx'
 
 export default function Home() {
+  const navigate = useNavigate()
+
   return (
     <>
       <div className="bg-cerulean">
         <Navbar />
         <Hero />
-        <div id="about" className="w-full flex flex-col lg:flex-row mx-auto items-center justify-center py-10">
-          <div className="w-full lg:w-1/2 px-4 mx-6 bg-accent-blue rounded-lg shadow-lg p-8">
+        <div id="about" className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-12 py-10 px-6">
+          <div className="w-full lg:w-1/2 bg-accent-blue rounded-lg shadow-lg p-8">
             <h1 className="text-3xl font-bold text-floral-white mb-4 ml-4">Itinerarey</h1>
             <p className="text-floral-white text-lg font-semibold ml-4">The better way to plan out your trips!</p>
             <p className="text-floral-white text-lg font-semibold ml-4 mt-4">When going on vacation, spending hours planning every moment can be exhausting. Itinerarey simplifies the process to just a few clicks!</p>
@@ -22,7 +25,10 @@ export default function Home() {
 
         <div className="w-full mt-12 flex flex-col items-center justify-center py-10 rounded-lg shadow-lg p-8" id="go">
           <h1 className="text-3xl font-bold text-floral-white mb-4">Stop spending time planning your trips.</h1>
-          <button className="bg-accent-blue text-floral-white hover:bg-ocean-mist hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer">
+          <button 
+            className="bg-accent-blue text-floral-white hover:bg-ocean-mist hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer"
+            onClick={() => navigate('/itinerarey/plan')}
+          >
             Want to get started?
           </button>
         </div>

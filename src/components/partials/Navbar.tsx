@@ -8,7 +8,7 @@ export default function Navbar({ showItems }: NavbarProps) {
     return (
         <nav className="sticky w-full z-20 top-0 inset-s-0 bg-floral-white z-150">
             <div className="max-w-7xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="#" className="flex items-center space-x-3">
+                <a href="/itinerarey" className="flex items-center space-x-3">
                     <img src={icon} className="h-10" alt="Logo" />
                     <span className="self-center text-xl font-bold text-cerulean whitespace-nowrap">Itinerarey</span>
                 </a>
