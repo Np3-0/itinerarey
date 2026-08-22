@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { saveCookie } from "../../utils/cookies.ts";
 import Navbar from "../partials/Navbar";
 import Input from "../partials/Input";
 import "cally";
@@ -20,7 +22,8 @@ type TripInfo = {
 };
 
 export default function Planner() {
-    const calendarRef = useRef<any>(null);
+    const navigate = useNavigate();
+    const calendarRef = useRef<(HTMLElement & { value: string }) | null>(null);
     const [tripInfo, setTripInfo] = useState<TripInfo>({
         budgets: {
             overall: 0,
@@ -37,32 +40,29 @@ export default function Planner() {
         people: 1,
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-
-        if (name === "startDate" || name === "endDate") {
-            setTripInfo(prev => ({
-                ...prev,
-                dates: {
-                    ...prev.dates,
-                    [name]: value,
-                },
-            }));
-        } else {
-            setTripInfo(prev => ({
-                ...prev,
-                [name]: value,
-            }));
-        }
+    {/* Gets data, checks, and then saves as a cookie*/}
+    const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const updatedTripInfo = {
+            ...tripInfo,
+            budgets: {
+                ...tripInfo.budgets,
+                overall: tripInfo.budgets.flight + tripInfo.budgets.hotel + tripInfo.budgets.activity,
+            },
+        };
+        setTripInfo(updatedTripInfo);
+        saveCookie(updatedTripInfo, "tripInfo");
+        navigate("/itinerarey/flights");
     };
+
+
 
     useEffect(() => {
         const calendar = calendarRef.current;
         if (!calendar) return;
 
         const handleChange = () => {
-            const value = calendar.value as string;
-
+            const value = calendar.value;
             const [startDate = "", endDate = ""] = value.split("/");
 
             setTripInfo(prev => ({
@@ -72,20 +72,16 @@ export default function Planner() {
                     endDate,
                 },
             }));
-            console.log(tripInfo)
         };
 
         calendar.addEventListener("change", handleChange);
-
         return () =>
             calendar.removeEventListener("change", handleChange);
-    }, []);
+    }, [tripInfo]);
 
     useEffect(() => {
         if (!calendarRef.current) return;
-
         const { startDate, endDate } = tripInfo.dates;
-
         calendarRef.current.value =
             startDate || endDate
                 ? `${startDate}/${endDate}`
@@ -93,20 +89,22 @@ export default function Planner() {
     }, [tripInfo.dates]);
 
     return (
-
         <>
             <Navbar showItems={false} />
             <div className="w-full bg-cerulean min-h-screen flex flex-col items-center justify-start">
                 <h1 className="text-4xl font-bold text-floral-white mt-12">Trip Info</h1>
                 <p className="text-floral-white text-lg my-6 font-semibold">Before we start planning, please enter some basic information. All prices should exclude taxes and fees.</p>
 
-                <form>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit(e);
+                }}>
                     <div className="grid gap-8 mb-6 md:grid-cols-2 mx-auto bg-accent-blue px-12 py-8 rounded-lg shadow-lg text-white font-semibold">
                         <div>
-                            <Input id="origin" name="Origin" required={true} type="text" placeholder="New York"/>
+                            <Input id="origin" name="Origin" required={true} type="text" placeholder="New York" value={tripInfo.origin} onChange={(e) => setTripInfo({...tripInfo, origin: e.target.value})}/>
                         </div>
                         <div>
-                            <Input id="destination" name="Destination" required={true} type="text" placeholder="Shenzhen?"/>
+                            <Input id="destination" name="Destination" required={true} type="text" placeholder="Shenzhen?" value={tripInfo.destination} onChange={(e) => setTripInfo({...tripInfo, destination: e.target.value})}/>
                         </div>
 
                         <div className="bg-floral-white text-accent-blue rounded-xl shadow-lg p-4">
@@ -152,10 +150,10 @@ export default function Planner() {
                             </div>
                         </div>
                         <div>
-                            <Input id="people" name="Number of People" required={true} type="number" placeholder="1"/>
-                            <Input id="hotelPrice" name="Hotel Price (per night)" required={true} type="number" step="0.01" placeholder="$150.00"/>
-                            <Input id="flightPrice" name="Flight Price (round trip)" required={true} type="number" step="0.01" placeholder="$150.00"/>
-                            <Input id="activityPrice" name="Activity Budget" required={true} type="number" step="0.01" placeholder="$150.00"/>
+                            <Input id="people" name="Number of People" required={true} type="number" placeholder="1" value={tripInfo.people} onChange={(e) => setTripInfo({...tripInfo, people: e.target.valueAsNumber})}/>
+                            <Input id="hotelPrice" name="Hotel Price (per night)" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.hotel} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, hotel: e.target.valueAsNumber}})}/>
+                            <Input id="flightPrice" name="Flight Price (round trip)" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.flight} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, flight: e.target.valueAsNumber}})}/>
+                            <Input id="activityPrice" name="Activity Budget" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.activity} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, activity: e.target.valueAsNumber}})}/>
                         </div>
                         <div className="flex flex-col items-center justify-center gap-4 md:col-span-2">
                             <button 
