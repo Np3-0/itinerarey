@@ -1,4 +1,5 @@
-import type { FlightType } from "../../data/FlightTypes.ts"
+import type { FlightType } from "../../data/FlightTypes.ts";
+import Button from "../partials/Button.tsx";
 
 interface FlightProps {
     flight: FlightType;
@@ -32,9 +33,8 @@ export default function Flight( { flight }: FlightProps ) {
                 </div>
             ))}
             <div className="flex justify-between items-center mb-2">
-                <p className="text-cerulean text-lg mb-2 font-semibold">Total Duration: {Math.floor(flight.total_duration_minutes / 60)}h {flight.total_duration_minutes % 60}m</p>
-                <button className="bg-accent-blue text-floral-white hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer">Select Flight</button>
-                
+                <p className="text-cerulean text-lg mb-2 font-semibold">Total Duration: {Math.floor(flight.total_duration_minutes / 60)}h {flight.total_duration_minutes % 60}m</p>   
+                <Button colorway="secondary" text="Select Flight" type="button"/>
             </div>
             
         </div>

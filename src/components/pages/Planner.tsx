@@ -1,30 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { saveCookie } from "../../utils/cookies.ts";
-import Navbar from "../partials/Navbar";
-import Input from "../partials/Input";
+import { saveCookie, checkIfCookieExists, getCookie } from "../../utils/cookies.ts";
+import type { cookieData } from "../../data/cookieType.ts"
+import Navbar from "../partials/Navbar.tsx";
+import Input from "../partials/Input.tsx";
+import Button from "../partials/Button.tsx"
 import "cally";
-
-type TripInfo = {
-    budgets: {
-        overall: number;
-        flight: number;
-        hotel: number;
-        activity: number;
-    };
-    dates: {
-        startDate: string;
-        endDate: string;
-    },
-    origin: string;
-    destination: string;
-    people: number;
-};
 
 export default function Planner() {
     const navigate = useNavigate();
     const calendarRef = useRef<(HTMLElement & { value: string }) | null>(null);
-    const [tripInfo, setTripInfo] = useState<TripInfo>({
+    const [tripInfo, setTripInfo] = useState<cookieData>({
         budgets: {
             overall: 0,
             flight: 0,
@@ -87,6 +73,19 @@ export default function Planner() {
                 ? `${startDate}/${endDate}`
                 : "";
     }, [tripInfo.dates]);
+
+    useEffect(() => {
+        {/* Check if cookie exists, if so, populate the form */}
+        const handleCookie = () => {
+            if (!checkIfCookieExists("tripInfo")) return;
+            const cookie = getCookie("tripInfo");
+            if (cookie) {
+                setTripInfo(cookie);
+            }
+        };
+
+        handleCookie();
+    }, []);
 
     return (
         <>
@@ -156,12 +155,7 @@ export default function Planner() {
                             <Input id="activityPrice" name="Activity Budget" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.activity} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, activity: e.target.valueAsNumber}})}/>
                         </div>
                         <div className="flex flex-col items-center justify-center gap-4 md:col-span-2">
-                            <button 
-                                className="bg-floral-white text-cerulean hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer"
-                                type="submit"
-                            >
-                                Plan!
-                            </button>
+                            <Button colorway="primary" text="Plan!" type="submit"/>
                         </div>
                     </div>
 

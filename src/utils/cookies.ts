@@ -10,3 +10,7 @@ export function getCookie(name: string) {
     }
     return null;
 }
+
+export function checkIfCookieExists(name: string): boolean {
+    return document.cookie.split(';').some(c => c.trim().startsWith(name + '='));
+}
