@@ -3,11 +3,13 @@ import Button from "../partials/Button.tsx";
 
 interface FlightProps {
     flight: FlightType;
+    onChosen: (flight: FlightType) => void;
+    selected: boolean;
 }
 
-export default function Flight( { flight }: FlightProps ) {
+export default function Flight( { flight, onChosen, selected }: FlightProps ) {
     return (
-        <div className="bg-floral-white rounded-lg shadow-md p-4 mb-4">
+        <div className={`bg-floral-white rounded-lg shadow-md p-4 mb-4 ${selected ? "border-4 border-cerulean" : ""}`}>
             <div className="flex justify-between items-center mb-2">
                 <h1 className="text-2xl font-semibold text-heading mb-2 text-cerulean">{flight.airlines.join(", ")}</h1>
                 <p className="text-accent-blue font-semibold text-xl mb-2 mx-4">${flight.price}</p>
@@ -34,7 +36,7 @@ export default function Flight( { flight }: FlightProps ) {
             ))}
             <div className="flex justify-between items-center mb-2">
                 <p className="text-cerulean text-lg mb-2 font-semibold">Total Duration: {Math.floor(flight.total_duration_minutes / 60)}h {flight.total_duration_minutes % 60}m</p>   
-                <Button colorway="secondary" text="Select Flight" type="button"/>
+                <Button colorway="secondary" text={selected ? "Selected" : "Select Flight"} type="button" onClick={() => onChosen(flight)} />
             </div>
             
         </div>

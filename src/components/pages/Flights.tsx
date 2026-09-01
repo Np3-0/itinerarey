@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../partials/Navbar";
 import { getFlightDataFromAPI, filterFlights } from "../../utils/getFlightDataFromAPI";
 import { getCookie } from "../../utils/cookies.ts";
-import type { FlightRes } from "../../data/FlightTypes.ts"
+import type { FlightRes, FlightType } from "../../data/FlightTypes.ts"
 import type { cookieData } from "../../data/cookieType.ts"
 import Flight from "../partials/Flight";
 
@@ -11,6 +11,7 @@ export default function Flights() {
     const navigate = useNavigate();
     const [flights, setFlights] = useState<FlightRes | null>(null);
     const [cookieData, setCookieData] = useState<cookieData | null>(null);
+    const [selectedFlight, setSelectedFlight] = useState<FlightType | null>(null);
 
     // checks to see if the cookie exists, routes to home page if not. if it does, sends data to flight API.
     useEffect(() => {
@@ -53,7 +54,7 @@ export default function Flights() {
                             
                         ) : (<>
                             {flights.flights.map((flight, index) => (
-                                <Flight key={index} flight={flight} />
+                                <Flight key={index} flight={flight} onChosen={() => setSelectedFlight(flight)} selected={selectedFlight === flight} />
                             ))}
                         </>)}   
                     </div>
