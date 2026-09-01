@@ -1,3 +1,5 @@
+import type { FlightType } from "./FlightTypes.ts";
+
 export interface cookieData {
     budgets: {
         overall: number;
@@ -12,4 +14,8 @@ export interface cookieData {
     destination: string;
     origin: string;
     people: number;
+    flights: {
+        departure: FlightType | null;
+        return: FlightType | null;
+    }
 }

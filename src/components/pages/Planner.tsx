@@ -24,6 +24,10 @@ export default function Planner() {
         origin: "",
         destination: "",
         people: 1,
+        flights: {
+            departure: null,
+            return: null,
+        }
     });
 
     {/* Gets data, checks, and then saves as a cookie*/}
@@ -151,7 +155,7 @@ export default function Planner() {
                         <div>
                             <Input id="people" name="Number of People" required={true} type="number" placeholder="1" value={tripInfo.people} onChange={(e) => setTripInfo({...tripInfo, people: e.target.valueAsNumber})}/>
                             <Input id="hotelPrice" name="Hotel Price (per night)" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.hotel} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, hotel: e.target.valueAsNumber}})}/>
-                            <Input id="flightPrice" name="Flight Price (round trip)" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.flight} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, flight: e.target.valueAsNumber}})}/>
+                            <Input id="flightPrice" name="Flight Price (for one flight)" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.flight} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, flight: e.target.valueAsNumber}})}/>
                             <Input id="activityPrice" name="Activity Budget" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.activity} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, activity: e.target.valueAsNumber}})}/>
                         </div>
                         <div className="flex flex-col items-center justify-center gap-4 md:col-span-2">
