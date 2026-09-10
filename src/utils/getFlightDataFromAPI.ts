@@ -20,7 +20,7 @@ export function filterFlights(flightData: FlightRes, cookieData: cookieData): Fl
 
 export async function getAirportsInCity(city: string) {
     const res = await fetch(
-        `https://api.mapbox.com/search/geocode/v6/forward?q=${encodeURIComponent(city)}&access_token=pk.eyJ1IjoibmF0ZS1vYnJpZW4iLCJhIjoiY210dGc4YnFnMDk2NTJ5b2l4MmU2eWxncyJ9.uFAo92MrbEEoA39_uET_Pw`
+        `https://api.mapbox.com/search/geocode/v6/forward?q=${encodeURIComponent(city)}&access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`
     );
     const data = await res.json();
     if (!data.features?.length) {
