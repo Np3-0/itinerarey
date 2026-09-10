@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { saveCookie, checkIfCookieExists, getCookie } from "../../utils/cookies.ts";
-import type { cookieData } from "../../data/cookieType.ts"
+import { saveCookie, checkIfCookieExists, getCookie, type cookieData } from "../../utils/cookies.ts";
 import Navbar from "../partials/Navbar.tsx";
 import Input from "../partials/Input.tsx";
 import Button from "../partials/Button.tsx"
@@ -22,6 +21,8 @@ export default function Planner() {
             endDate: "",
         },
         origin: "",
+        originAirport: null,
+        destinationAirport: null,
         destination: "",
         people: 1,
         flights: {
@@ -31,8 +32,9 @@ export default function Planner() {
     });
 
     {/* Gets data, checks, and then saves as a cookie*/}
-    const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+        
         const updatedTripInfo = {
             ...tripInfo,
             budgets: {
@@ -41,6 +43,7 @@ export default function Planner() {
             },
         };
         setTripInfo(updatedTripInfo);
+        console.log("Trip Info:", updatedTripInfo);
         saveCookie(updatedTripInfo, "tripInfo");
         navigate("/itinerarey/flights");
     };

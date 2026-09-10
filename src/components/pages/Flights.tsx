@@ -3,38 +3,49 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../partials/Navbar.tsx";
 import Flight from "../partials/Flight.tsx";
 import Button from "../partials/Button.tsx";
-import { getFlightDataFromAPI, filterFlights } from "../../utils/getFlightDataFromAPI.ts";
-import { getCookie, saveCookie } from "../../utils/cookies.ts";
+import { getFlightDataFromAPI, filterFlights, getAirportsInCity } from "../../utils/getFlightDataFromAPI.ts";
+import { getCookie, saveCookie, type cookieData } from "../../utils/cookies.ts";
 import type { FlightRes, FlightType } from "../../data/FlightTypes.ts";
-import type { cookieData } from "../../data/cookieType.ts";
+import type { AirportType } from "../../data/AirportType.ts";
+import Modal from "../partials/Modal.tsx";
 
 
 export default function Flights() {
     const navigate = useNavigate();
     const [flights, setFlights] = useState<FlightRes | null>(null);
-    const [cookieData, setCookieData] = useState<cookieData | null>(null);
     const [selectedFlight, setSelectedFlight] = useState<FlightType | null>(null);
     const [flightNum, setFlightNum] = useState<number>(0);
+    const [airports, setAirports] = useState<AirportType[]>([]);
+    const [selectedAirport, setSelectedAirport] = useState<AirportType | null>(null);
+    const [airportNum, setAirportNum] = useState<number>(0);
+    const [cookieData, setCookieData] = useState<cookieData | null>(null);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     // checks to see if the cookie exists, routes to home page if not. if it does, sends data to flight API.
     useEffect(() => {
         const fetchFlightData = async () => {
             const cookie = getCookie("tripInfo");
             if (!cookie) {
-                window.location.href = "/";
+                navigate("/itinerarey");
                 return;
             }
             setCookieData(cookie);
-
-            const { origin, destination, dates } = cookie;
-            const date = flightNum === 0 ? dates.startDate : dates.endDate;
-            const res = await getFlightDataFromAPI(origin, destination, date);
-            setFlights(res);
-            setFlights(filterFlights(res, cookie));
+            const airportChoices = await getAirportsInCity(airportNum === 0 ? cookie.origin : cookie.destination);
+            setAirports(airportChoices);
+            
+            if (airportChoices.length > 1 && (!cookie.originAirport || !cookie.destinationAirport)) {
+                setShowModal(true);
+            } else {
+                const { originAirport, destinationAirport, dates } = cookie;
+                const date = flightNum === 0 ? dates.startDate : dates.endDate;
+                const res = await getFlightDataFromAPI(originAirport.iata, destinationAirport.iata, date);
+                setFlights(res);
+                setFlights(filterFlights(res, cookie));
+            }
         };
 
         fetchFlightData();
-    }, [flightNum]);
+    }, [flightNum, navigate, airportNum]);
 
     const handleFlightSubmission = () => {
         if (!selectedFlight || !cookieData) return;
@@ -48,14 +59,45 @@ export default function Flights() {
         }
     }
 
+    const handleModalSubmit = () => {
+        if (!selectedAirport || !cookieData) {
+            alert("An error occurred. Please try again.");
+            return;
+        }
+
+        const updatedCookieData = 
+            airportNum === 0 
+                ? { ...cookieData, originAirport: selectedAirport }
+                : { ...cookieData, destinationAirport: selectedAirport };
+            
+        setCookieData(updatedCookieData);
+        if (airportNum === 0) {
+            setAirportNum(1);
+        }
+        console.log(updatedCookieData);
+        saveCookie(updatedCookieData, "tripInfo");
+        navigate(0);
+    }
+
     return (
         <>
             <Navbar />
             <div className="flex flex-col items-center justify-center min-h-screen bg-cerulean">
                 <h1 className="text-4xl font-bold text-heading text-white mt-18">Flights for {flightNum === 0 ? cookieData?.dates.startDate : cookieData?.dates.endDate}</h1>
                 <p className="text-lg text-white my-4 font-semibold">Choose your flight!</p>
+                
                 {selectedFlight && (
                     <Button text="Continue" onClick={() => {handleFlightSubmission()}} colorway="primary" />
+                )}
+                {showModal && (
+                    <Modal 
+                        title="Multiple Airports Found" 
+                        info={airports} 
+                        description="Choose the airport you want to use." 
+                        onSubmit={() => handleModalSubmit()} 
+                        onChosen={setSelectedAirport} 
+                        selectedIndex={selectedAirport ? airports.indexOf(selectedAirport) : -1} 
+                    />
                 )}
                 {flights ? (
                     <div className="mt-6 w-full max-w-4xl bg-accent-blue rounded-lg shadow-md p-6">
