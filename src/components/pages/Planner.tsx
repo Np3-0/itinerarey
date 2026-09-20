@@ -46,7 +46,7 @@ export default function Planner() {
         setTripInfo(updatedTripInfo);
         console.log("Trip Info:", updatedTripInfo);
         saveCookie(updatedTripInfo, "tripInfo");
-        navigate("/itinerarey/flights");
+        navigate("/flights");
     };
 
 

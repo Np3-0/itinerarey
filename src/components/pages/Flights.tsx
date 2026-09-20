@@ -26,7 +26,7 @@ export default function Flights() {
         const fetchFlightData = async () => {
             const cookie = getCookie("tripInfo");
             if (!cookie) {
-                navigate("/itinerarey");
+                navigate("/");
                 return;
             }
             setCookieData(cookie);
@@ -55,7 +55,7 @@ export default function Flights() {
             setFlightNum(1);
         } else if (date === cookieData.dates.endDate) {
             saveCookie({ ...cookieData, flights: { ...cookieData.flights, return: selectedFlight } }, "tripInfo");
-            navigate("/itinerarey/hotels");
+            navigate("/hotels");
         }
     }
 
@@ -108,7 +108,7 @@ export default function Flights() {
                                 <p className="text-lg text-white mt-4">No flights available for the selected dates. Please change your planned information.</p>
                                 <button 
                                     className="bg-floral-white text-cerulean hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer" 
-                                    onClick={() => navigate("/itinerarey/plan")}
+                                    onClick={() => navigate("/plan")}
                                 >
                                     Go back
                                 </button>

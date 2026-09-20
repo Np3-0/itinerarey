@@ -19,7 +19,7 @@ export default function Home() {
             
           </div>
           <div className="w-full lg:w-1/2 px-4 mt-8 lg:mt-0">
-            <img src="/itinerarey/travel.jpg" alt="Travel" className="rounded-lg shadow-lg" />
+            <img src="../../assets/travel.jpg" alt="Travel" className="rounded-lg shadow-lg" />
           </div>
         </div>
 
@@ -27,7 +27,7 @@ export default function Home() {
           <h1 className="text-3xl font-bold text-floral-white mb-4">Stop spending time planning your trips.</h1>
           <button 
             className="bg-accent-blue text-floral-white hover:bg-ocean-mist hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer"
-            onClick={() => navigate('/itinerarey/plan')}
+            onClick={() => navigate('/plan')}
           >
             Want to get started?
           </button>

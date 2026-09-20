@@ -9,7 +9,7 @@ export default function NotFound() {
             <p className="text-xl text-floral-white mt-12 font-semibold">We haven't mapped out this trip yet!</p>
             <button 
                 className="mt-8 bg-accent-blue text-floral-white hover:bg-ocean-mist hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer"
-                onClick={() => navigate('/itinerarey')}
+                onClick={() => navigate('/')}
                 >
                 Go to Home
             </button>

@@ -17,7 +17,7 @@ export default function Hotels() {
         const fetchHotels = async () => {
             const cookie = getCookie("tripInfo");
             if (!cookie) {
-                navigate("/itinerarey");
+                navigate("/");
                 return;
             }
             setCookieData(cookie);
@@ -35,7 +35,7 @@ export default function Hotels() {
             hotel: selectedHotel
         }
         saveCookie(updatedCookieData, "tripInfo");
-        navigate("/itinerarey/activities");
+        navigate("/activities");
     }
 
     return (
@@ -56,7 +56,7 @@ export default function Hotels() {
                                 <p className="text-lg text-white mt-4">No hotels available for the selected dates. Please change your planned information.</p>
                                 <button
                                     className="bg-floral-white text-cerulean hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer"
-                                    onClick={() => navigate("/itinerarey/plan")}
+                                    onClick={() => navigate("/plan")}
                                 >
                                     Go back
                                 </button>
