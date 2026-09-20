@@ -1,18 +1,21 @@
-export default async function getHotels() {
-    try {
-        const res = await fetch(
-            "https://sky-scrapper.p.rapidapi.com/api/v1/hotels/searchHotels?adults=1&rooms=1&limit=30&sorting=-relevance&currency=USD&market=en-US&countryCode=US",
-            {
-                method: "GET",
-                headers: {
-                    "x-rapidapi-key": import.meta.env.VITE_HOTEL_API_KEY,
-                    "x-rapidapi-host": "sky-scrapper.p.rapidapi.com",
-                    "Content-Type": "application/json"
-                }
+import type { cookieData } from "./cookies.ts";
+import type { HotelRes } from "../data/hotelTypes.ts";
+
+export default async function getHotelDataFromAPI(cookieData: cookieData): Promise<HotelRes> {
+    console.log(typeof(cookieData.budgets.hotel))
+    const res = await fetch(`https://booking-scraper.omkar.cloud/booking/hotels/search?
+        query=${encodeURIComponent(cookieData.destination)}&checkin=${cookieData.dates.startDate}&checkout=${cookieData.dates.endDate}&
+        adults=1&rooms=1&page=1&sort_by=price&price_max=${cookieData.budgets.hotel}&locale=en-us&currency=USD`,
+        {
+            method: "GET",
+            headers: {
+                "API-Key": import.meta.env.VITE_HOTEL_API_KEY,
             }
-        );
-        console.log(res.text());
-    } catch (error) {
-        console.error(error);
-    }
+        }
+    )
+    const data = await res.json();
+    console.log(data)
+    return { 
+        ...data,
+        results: data.results.filter((result) => result.price.total <= cookieData.budgets.hotel)};
 }

@@ -59,7 +59,8 @@ export default function Flights() {
         }
     }
 
-    const handleModalSubmit = () => {
+    const handleModalSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (!selectedAirport || !cookieData) {
             alert("An error occurred. Please try again.");
             return;
@@ -73,10 +74,10 @@ export default function Flights() {
         setCookieData(updatedCookieData);
         if (airportNum === 0) {
             setAirportNum(1);
+        } else if (airportNum === 1) {
+            setShowModal(false);
         }
-        console.log(updatedCookieData);
         saveCookie(updatedCookieData, "tripInfo");
-        navigate(0);
     }
 
     return (
@@ -94,20 +95,20 @@ export default function Flights() {
                         title="Multiple Airports Found" 
                         info={airports} 
                         description="Choose the airport you want to use." 
-                        onSubmit={() => handleModalSubmit()} 
+                        onSubmit={handleModalSubmit} 
                         onChosen={setSelectedAirport} 
                         selectedIndex={selectedAirport ? airports.indexOf(selectedAirport) : -1} 
                     />
                 )}
                 {flights ? (
                     <div className="mt-6 w-full max-w-4xl bg-accent-blue rounded-lg shadow-md p-6">
-                        <h2 className="text-2xl font-semibold text-heading mb-4 text-white">Available Flights: {flights.flights.length}</h2>
+                        <h1 className="text-2xl font-semibold text-heading mb-4 text-white">Available Flights: {flights.flights.length}</h1>
                         {flights.flights.length === 0 ? (
                             <>
                                 <p className="text-lg text-white mt-4">No flights available for the selected dates. Please change your planned information.</p>
                                 <button 
                                     className="bg-floral-white text-cerulean hover:scale-110 py-3 px-12 rounded-full transition duration-300 font-semibold text-lg cursor-pointer" 
-                                    onClick={() => navigate("/plan")}
+                                    onClick={() => navigate("/itinerarey/plan")}
                                 >
                                     Go back
                                 </button>

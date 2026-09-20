@@ -23,6 +23,7 @@ export default function Planner() {
         origin: "",
         originAirport: null,
         destinationAirport: null,
+        hotel: null,
         destination: "",
         people: 1,
         flights: {
@@ -107,10 +108,10 @@ export default function Planner() {
                 }}>
                     <div className="grid gap-8 mb-6 md:grid-cols-2 mx-auto bg-accent-blue px-12 py-8 rounded-lg shadow-lg text-white font-semibold">
                         <div>
-                            <Input id="origin" name="Origin" required={true} type="text" placeholder="New York" value={tripInfo.origin} onChange={(e) => setTripInfo({...tripInfo, origin: e.target.value})}/>
+                            <Input id="origin" name="Origin" required={true} type="text" placeholder="New York City, NY" value={tripInfo.origin} onChange={(e) => setTripInfo({...tripInfo, origin: e.target.value})}/>
                         </div>
                         <div>
-                            <Input id="destination" name="Destination" required={true} type="text" placeholder="Shenzhen?" value={tripInfo.destination} onChange={(e) => setTripInfo({...tripInfo, destination: e.target.value})}/>
+                            <Input id="destination" name="Destination" required={true} type="text" placeholder="Shenzhen, China" value={tripInfo.destination} onChange={(e) => setTripInfo({...tripInfo, destination: e.target.value})}/>
                         </div>
 
                         <div className="bg-floral-white text-accent-blue rounded-xl shadow-lg p-4">
@@ -157,7 +158,7 @@ export default function Planner() {
                         </div>
                         <div>
                             <Input id="people" name="Number of People" required={true} type="number" placeholder="1" value={tripInfo.people} onChange={(e) => setTripInfo({...tripInfo, people: e.target.valueAsNumber})}/>
-                            <Input id="hotelPrice" name="Hotel Price (per night)" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.hotel} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, hotel: e.target.valueAsNumber}})}/>
+                            <Input id="hotelPrice" name="Hotel Price (total)" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.hotel} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, hotel: e.target.valueAsNumber}})}/>
                             <Input id="flightPrice" name="Flight Price (for one flight)" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.flight} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, flight: e.target.valueAsNumber}})}/>
                             <Input id="activityPrice" name="Activity Budget" required={true} type="number" step="0.01" placeholder="$150.00" value={tripInfo.budgets.activity} onChange={(e) => setTripInfo({...tripInfo, budgets: {...tripInfo.budgets, activity: e.target.valueAsNumber}})}/>
                         </div>

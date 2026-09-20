@@ -1,17 +1,18 @@
 import type { FlightType } from "../data/FlightTypes.ts";
 import type { AirportType } from "../data/AirportType.ts";
+import type { HotelInfo } from "../data/hotelTypes.ts";
 
 export function saveCookie(obj: object, name: string) {
-    const val = encodeURIComponent(JSON.stringify(obj));
-    document.cookie = `${name}=${val}; path=/; max-age=604800; samesite=strict; Secure;`;
+    try {
+        localStorage.setItem(name, JSON.stringify(obj));
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 export function getCookie(name: string) {
-    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-    if (match) {
-        return JSON.parse(decodeURIComponent(match[2]));
-    }
-    return null;
+    const raw = localStorage.getItem(name);
+    return raw ? JSON.parse(raw) : null;
 }
 
 export function checkIfCookieExists(name: string): boolean {
@@ -38,4 +39,5 @@ export interface cookieData {
         departure: FlightType | null;
         return: FlightType | null;
     }
+    hotel: HotelInfo | null;
 }

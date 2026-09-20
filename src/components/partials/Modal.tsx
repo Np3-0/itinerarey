@@ -6,7 +6,7 @@ interface ModalProps {
     title: string,
     onChosen: (airport: AirportType) => void,
     description: string,
-    onSubmit: () => void
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
     selectedIndex?: number
 }
 
