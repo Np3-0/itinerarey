@@ -20,10 +20,9 @@ export default function Flights() {
     const [airportNum, setAirportNum] = useState<number>(0);
     const [cookieData, setCookieData] = useState<cookieData | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
-
-    // checks to see if the cookie exists, routes to home page if not. if it does, sends data to flight API.
     const [searchTrigger, setSearchTrigger] = useState(0);
 
+    // checks to see if the cookie exists, routes to home page if not. if it does, sends data to flight API.
     useEffect(() => {
         const fetchFlightData = async () => {
             try {
@@ -38,7 +37,9 @@ export default function Flights() {
                 if (cookie.originAirport && cookie.destinationAirport) {
                     const { originAirport, destinationAirport, dates } = cookie;
                     const date = flightNum === 0 ? dates.startDate : dates.endDate;
-                    const res = await getFlightDataFromAPI(originAirport.iata, destinationAirport.iata, date);
+                    const from = flightNum === 0 ? originAirport : destinationAirport;
+                    const to = flightNum === 0 ? destinationAirport : originAirport;
+                    const res = await getFlightDataFromAPI(from.iata, to.iata, date);
                     setFlights(filterFlights(res, cookie));
                     return;
                 }
