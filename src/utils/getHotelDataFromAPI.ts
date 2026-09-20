@@ -1,5 +1,5 @@
 import type { cookieData } from "./cookies.ts";
-import type { HotelRes } from "../data/hotelTypes.ts";
+import type { HotelInfo, HotelRes } from "../data/hotelTypes.ts";
 
 export default async function getHotelDataFromAPI(cookieData: cookieData): Promise<HotelRes> {
     console.log(typeof(cookieData.budgets.hotel))
@@ -17,5 +17,5 @@ export default async function getHotelDataFromAPI(cookieData: cookieData): Promi
     console.log(data)
     return { 
         ...data,
-        results: data.results.filter((result) => result.price.total <= cookieData.budgets.hotel)};
+        results: data.results.filter((result: HotelInfo) => result.price.total <= cookieData.budgets.hotel)};
 }

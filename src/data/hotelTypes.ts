@@ -57,7 +57,7 @@ export interface HotelInfo {
     }
     price: {
         currency: string;
-        total: number | null;
+        total: number;
         per_night: unknown | null;
         before_discount: unknown | null;
         charges_info: unknown | null;

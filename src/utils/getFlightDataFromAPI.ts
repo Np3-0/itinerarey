@@ -27,10 +27,10 @@ export async function getAirportsInCity(city: string) {
         alert("No airport found for this city. Try a more general location.")
         window.history.back();
         return [];
-    }
+    }   
 
     // removes any feature that isnt a city.
-    const filteredData = data.features.filter((feature) => feature.properties.feature_type === "place" || feature.properties.feature_type === "region");
+    const filteredData = data.features.filter((feature: any) => feature.properties.feature_type === "place" || feature.properties.feature_type === "region");
     if (!filteredData.length) {
         alert("No airport found for this city. Try a more general location.")
         window.history.back();

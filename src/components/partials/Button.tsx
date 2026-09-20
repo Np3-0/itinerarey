@@ -3,6 +3,7 @@ interface ButtonProps {
     text: string;
     onClick?: (e?: any) => void;
     type?: "button" | "submit" | "reset";
+    disabled?: boolean
 }
 
 export default function Button({ colorway, text, onClick, type, disabled }: ButtonProps) {
