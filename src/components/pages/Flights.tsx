@@ -22,6 +22,8 @@ export default function Flights() {
     const [showModal, setShowModal] = useState<boolean>(false);
 
     // checks to see if the cookie exists, routes to home page if not. if it does, sends data to flight API.
+    const [searchTrigger, setSearchTrigger] = useState(0);
+
     useEffect(() => {
         const fetchFlightData = async () => {
             try {
@@ -31,17 +33,29 @@ export default function Flights() {
                     return;
                 }
                 setCookieData(cookie);
-                const airportChoices = await getAirportsInCity(airportNum === 0 ? cookie.origin : cookie.destination);
-                setAirports(airportChoices);
 
-                if (airportChoices.length > 1 && (!cookie.originAirport || !cookie.destinationAirport)) {
-                    setShowModal(true);
-                } else {
+                // If we already have both airports resolved, skip straight to the flight search.
+                if (cookie.originAirport && cookie.destinationAirport) {
                     const { originAirport, destinationAirport, dates } = cookie;
                     const date = flightNum === 0 ? dates.startDate : dates.endDate;
                     const res = await getFlightDataFromAPI(originAirport.iata, destinationAirport.iata, date);
-                    setFlights(res);
                     setFlights(filterFlights(res, cookie));
+                    return;
+                }
+
+                const airportChoices = await getAirportsInCity(airportNum === 0 ? cookie.origin : cookie.destination);
+                setAirports(airportChoices);
+
+                if (airportChoices.length > 1) {
+                    setShowModal(true);
+                } else {
+                    // single-airport case, save it and let the trigger re-run the effect
+                    const updated = airportNum === 0
+                        ? { ...cookie, originAirport: airportChoices[0] }
+                        : { ...cookie, destinationAirport: airportChoices[0] };
+                    saveCookie(updated, "tripInfo");
+                    setCookieData(updated);
+                    setSearchTrigger(t => t + 1);
                 }
             } catch (err) {
                 console.error("fetchFlightData failed:", err);
@@ -49,7 +63,7 @@ export default function Flights() {
         };
 
         fetchFlightData();
-    }, [flightNum, navigate, airportNum]);
+    }, [flightNum, navigate, airportNum, searchTrigger]);
 
     const handleFlightSubmission = () => {
         if (!selectedFlight || !cookieData) return;
@@ -80,6 +94,7 @@ export default function Flights() {
             setAirportNum(1);
         } else if (airportNum === 1) {
             setShowModal(false);
+            setSearchTrigger(t => t + 1);
         }
         saveCookie(updatedCookieData, "tripInfo");
     }
