@@ -10,12 +10,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/itinerarey" element={<Home />} />
-        <Route path="/itinerarey/plan/*" element={<Planner />} />
-        <Route path="/itinerarey/flights/*" element={<Flights />} />
-        <Route path="/itinerarey/hotels/*" element={<Hotels />} />
-        <Route path="/itinerarey/activities/*" element={<Activities />} />
-        <Route path="/itinerarey/*" element={<NotFound />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/plan/*" element={<Planner />} />
+        <Route path="/flights/*" element={<Flights />} />
+        <Route path="/hotels/*" element={<Hotels />} />
+        <Route path="/activities/*" element={<Activities />} />
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   )
