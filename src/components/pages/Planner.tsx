@@ -29,7 +29,8 @@ export default function Planner() {
         flights: {
             departure: null,
             return: null,
-        }
+        },
+        activities: []
     });
 
     {/* Gets data, checks, and then saves as a cookie*/}

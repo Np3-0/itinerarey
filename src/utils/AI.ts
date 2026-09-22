@@ -14,7 +14,7 @@ export async function getResponseFromAI(cookieData: cookieData ) {
         location: z.string().describe("Address of the activity."),
         desc:  z.string().describe("Description of the activity."),
         price: z.number().describe("Price of the activity."),
-        additionalInfo: z.array(z.string()).describe("Anything additional about the activity.").optional(),
+        additionalInfo: z.string().describe("Anything additional about the activity."),
     });
     const activityListSchema = z.array(activityJSONSchema);
     const fullSchema = z.toJSONSchema(activityListSchema);

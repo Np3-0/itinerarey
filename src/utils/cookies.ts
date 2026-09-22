@@ -1,6 +1,7 @@
 import type { FlightType } from "../data/FlightTypes.ts";
 import type { AirportType } from "../data/AirportType.ts";
 import type { HotelInfo } from "../data/hotelTypes.ts";
+import type { ActivityType } from "../data/ActivityType.ts";
 
 export function saveCookie(obj: object, name: string) {
     try {
@@ -40,4 +41,5 @@ export interface cookieData {
         return: FlightType | null;
     }
     hotel: HotelInfo | null;
+    activities: Array<ActivityType>;
 }

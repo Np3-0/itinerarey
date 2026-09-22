@@ -4,12 +4,14 @@ import { type cookieData, getCookie, saveCookie } from "../../utils/cookies.ts";
 import Navbar from "../partials/Navbar.tsx";
 import { getResponseFromAI } from "../../utils/AI";
 import Button from "../partials/Button.tsx";
+import Activity from "../partials/Activity.tsx";
+import { type ActivityType } from "../../data/ActivityType.ts";
 
 export default function Activities() {
     const navigate = useNavigate();
     const [cookieData, setCookieData] = useState<cookieData | null>(null);
-    const [activities, setActivities] = useState<any | null>(null);
-    const [selectedActivities, setSelectedActivities] = useState<any | null>(null);
+    const [activities, setActivities] = useState<Array<ActivityType> | null>(null);
+    const [selectedActivities, setSelectedActivities] = useState<Array<ActivityType>>([]);
 
     useEffect(() => {
         const fetchActivities = async () => {
@@ -17,7 +19,8 @@ export default function Activities() {
             if (!cookie) {
                 navigate("/");
                 return;
-            }
+            } 
+
             setCookieData(cookie);
 
             const AIResult = await getResponseFromAI(cookie);
@@ -29,12 +32,34 @@ export default function Activities() {
             setActivities(AIResult);
         };
 
-        fetchActivities();
+       fetchActivities();
     }, [navigate]);
 
     const handleActivitySubmission = () => {
+        if (!selectedActivities || !cookieData) return;
 
+        const updatedCookieData = {
+            ...cookieData,
+            activities: selectedActivities
+        }
+        setCookieData(updatedCookieData);
+        saveCookie(updatedCookieData, "tripInfo");
+        navigate("/recap");
     }
+
+    const checkIfItemIsSelected = (activity: ActivityType): boolean => {
+        if (!selectedActivities) return false;
+        return selectedActivities.some(item => item.activity === activity.activity)
+    }
+
+    const handleChosenActivity = (activity: ActivityType) => {
+        setSelectedActivities((prev) => {
+            if (checkIfItemIsSelected(activity)) {
+                return prev.filter(a => a.activity !== activity.activity);
+            }
+            return [...prev, activity]
+        })
+    } 
 
     return (
         <>
@@ -43,7 +68,7 @@ export default function Activities() {
                 <h1 className="text-4xl font-bold text-heading text-white mt-18">Activities</h1>
                 <p className="text-xl font-semibold text-heading text-white my-6">Please select as many activities as you would like!</p>
 
-                {selectedActivities && (
+                {selectedActivities.length > 0 && (
                     <Button text="Continue" onClick={() => { handleActivitySubmission() }} colorway="primary" />
                 )}
                 {activities ? (
@@ -61,12 +86,21 @@ export default function Activities() {
                             </>
                         ) : (
                             <>
-                                /* Add activity mapping here. */
+                                {activities.map((activity) => {
+                                    return (
+                                        <Activity
+                                            key={activity.activity}
+                                            activityData={activity} 
+                                            onChosen={() => handleChosenActivity(activity)} 
+                                            selected={checkIfItemIsSelected(activity)}
+                                        />
+                                    );
+                                })}
                             </>
                         )}
                     </div>
                 ) : (
-                    <p className="text-lg text-white mt-4">Loading activity0 data... This might take a minute!</p>
+                    <p className="text-lg text-white mt-4">Loading activity data... This might take a minute!</p>
                 )}
             </div>
         </>
