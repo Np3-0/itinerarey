@@ -5,7 +5,6 @@ import earth from "../../assets/earth/earth.jpg";
 import heightmap from "../../assets/earth/heightmap.png";
 import herocities from "../../data/herocities.ts";
 import XSVG from '../../assets/icons/XSVG.tsx';
-import { saveCookie } from '../../utils/cookies.ts';
 
 export default function Hero() {
     const globeEl = useRef<any>(null);
