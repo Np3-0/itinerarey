@@ -20,6 +20,10 @@ export function checkIfCookieExists(name: string): boolean {
     return document.cookie.split(';').some(c => c.trim().startsWith(name + '='));
 }
 
+export function deleteCookie(name: string) {
+    localStorage.removeItem(name)
+}
+
 export interface cookieData {
     budgets: {
         overall: number;

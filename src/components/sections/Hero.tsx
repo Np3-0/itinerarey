@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Globe from 'react-globe.gl';
 import earth from "../../assets/earth/earth.jpg";
 import heightmap from "../../assets/earth/heightmap.png";
 import herocities from "../../data/herocities.ts";
 import XSVG from '../../assets/icons/XSVG.tsx';
+import { saveCookie } from '../../utils/cookies.ts';
 
 export default function Hero() {
     const globeEl = useRef<any>(null);
@@ -15,6 +17,7 @@ export default function Hero() {
         height: 600
     });
     const [inputValue, setInputValue] = useState("");
+    const navigate = useNavigate();
 
     const handlePointClick = (point: any) => {
         if (!globeEl.current) return;
@@ -106,7 +109,7 @@ export default function Hero() {
                     <div className="fixed inset-0 flex items-center justify-end bg-opacity-50 z-100 mx-6 pb-48">
                         <div className="relative bg-accent-blue p-8 rounded-lg shadow-lg max-w-md w-full">
                             <XSVG
-                                classes="absolute top-4 right-4 text-red-500 hover:scale-110 transition duration-300 cursor-pointer"
+                                classes="absolute top-4 right-4 text-floral-white hover:scale-110 transition duration-300 cursor-pointer"
                                 onClick={() => handlePointClick(selectedPoint)}
                             />
 
@@ -126,6 +129,7 @@ export default function Hero() {
                         </div>
                     </div>
                 )}
+
                 <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-full max-w-3xl px-4 z-50"
                     onPointerDown={(e) => e.stopPropagation()}
                     onClick={(e) => e.stopPropagation()}>
@@ -135,8 +139,8 @@ export default function Hero() {
                         onSubmit={(e) => {
                             e.preventDefault();
                             console.log("Search submitted:", inputValue);
-                            window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(inputValue)}`, '_blank')}
-                        }
+                            navigate(`/plan?dest=${inputValue}`)
+                        }}
                     >
                         <input
                             type="text"

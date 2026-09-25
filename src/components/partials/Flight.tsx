@@ -5,11 +5,13 @@ interface FlightProps {
     flight: FlightType;
     onChosen: (flight: FlightType) => void;
     selected: boolean;
+    type?: number
 }
 
-export default function Flight( { flight, onChosen, selected }: FlightProps ) {
+export default function Flight( { flight, onChosen, selected, type}: FlightProps ) {
+
     return (
-        <div className={`bg-floral-white rounded-lg shadow-md p-4 mb-4 ${selected ? "border-4 border-cerulean" : ""}`}>
+        <div className={`bg-floral-white rounded-lg shadow-md p-4 mb-4 ${selected ? "border-4 border-grapefruit" : ""}`}>
             <div className="flex justify-between items-center mb-2">
                 <h1 className="text-2xl font-semibold text-heading mb-2 text-cerulean">{flight.airlines.join(", ")}</h1>
                 <p className="text-accent-blue font-semibold text-xl mb-2 mx-4">${flight.price}</p>
@@ -35,8 +37,12 @@ export default function Flight( { flight, onChosen, selected }: FlightProps ) {
                 </div>
             ))}
             <div className="flex justify-between items-center mb-2">
-                <p className="text-cerulean text-lg mb-2 font-semibold">Total Duration: {Math.floor(flight.total_duration_minutes / 60)}h {flight.total_duration_minutes % 60}m</p>   
-                <Button colorway="secondary" text={selected ? "Selected" : "Select Flight"} type="button" onClick={() => onChosen(flight)} />
+                <p className="text-cerulean text-lg mb-2 mr-4 font-semibold">Total Duration: {Math.floor(flight.total_duration_minutes / 60)}h {flight.total_duration_minutes % 60}m</p>   
+                {type && type === 2 ? (
+                    <Button colorway="secondary" text="Book Now!" type="button" onClick={() => onChosen(flight)} />
+                ) : (
+                    <Button colorway="secondary" text={selected ? "Selected" : "Select Flight"} type="button" onClick={() => onChosen(flight)} />
+                )}
             </div>
             
         </div>

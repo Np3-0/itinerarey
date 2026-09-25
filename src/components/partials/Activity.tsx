@@ -3,7 +3,7 @@ import Button from "./Button.tsx";
 
 interface ActivityProps {
     activityData: ActivityType,
-    onChosen: (activity: ActivityType) => void;
+    onChosen?: (activity: ActivityType) => void;
     selected: boolean;
 }
 
@@ -25,7 +25,8 @@ export default function Activity({ activityData, onChosen, selected } : Activity
 
             <div className="flex justify-between items-center mb-2">
                 <p className="text-cerulean text-lg mb-2 font-semibold">{activityData.location}</p>
-                <Button colorway="secondary" text={selected ? "Deselect" : "Select"} type="button" onClick={() => onChosen(activityData)} />
+                {onChosen ? <Button colorway="secondary" text={selected ? "Deselect" : "Select"} type="button" onClick={() => onChosen(activityData)} /> : <></>}
+                
             </div>
         </div>
     );

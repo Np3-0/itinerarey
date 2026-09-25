@@ -19,7 +19,7 @@ export default function Home() {
             
           </div>
           <div className="w-full lg:w-1/2 px-4 mt-8 lg:mt-0">
-            <img src="../../assets/travel.jpg" alt="Travel" className="rounded-lg shadow-lg" />
+            <img src="travel.jpg" alt="Travel" className="rounded-lg shadow-lg" />
           </div>
         </div>
 

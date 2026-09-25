@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { saveCookie, checkIfCookieExists, getCookie, type cookieData } from "../../utils/cookies.ts";
 import Navbar from "../partials/Navbar.tsx";
 import Input from "../partials/Input.tsx";
@@ -8,6 +8,7 @@ import "cally";
 
 export default function Planner() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const calendarRef = useRef<(HTMLElement & { value: string }) | null>(null);
     const [tripInfo, setTripInfo] = useState<cookieData>({
         budgets: {
@@ -24,7 +25,7 @@ export default function Planner() {
         originAirport: null,
         destinationAirport: null,
         hotel: null,
-        destination: "",
+        destination: searchParams.get("dest") ?? "",
         people: 1,
         flights: {
             departure: null,
@@ -101,7 +102,7 @@ export default function Planner() {
             <Navbar showItems={false} />
             <div className="w-full bg-cerulean min-h-screen flex flex-col items-center justify-start">
                 <h1 className="text-4xl font-bold text-floral-white mt-12">Trip Info</h1>
-                <p className="text-floral-white text-lg my-6 font-semibold">Before we start planning, please enter some basic information. All prices should exclude taxes and fees.</p>
+                <p className="text-floral-white text-lg my-6 font-semibold mx-6 text-center">Before we start planning, please enter some basic information. All prices should exclude taxes and fees.</p>
 
                 <form onSubmit={(e) => {
                     e.preventDefault();

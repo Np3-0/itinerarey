@@ -20,7 +20,7 @@ export async function getResponseFromAI(cookieData: cookieData ) {
     const fullSchema = z.toJSONSchema(activityListSchema);
 
     const interaction = await ai.interactions.create({
-        model: "gemini-3.7-flash",
+        model: "gemini-3.5-flash-lite",
         system_instruction: `You are an AI bot tasked with finding activities to do in specific places,
             for a specific amount of days. Return a wide variety of activities, each with its price,
             location, description, and any extra info. The total should fit within the given budget.`,

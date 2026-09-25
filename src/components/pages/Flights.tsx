@@ -50,13 +50,16 @@ export default function Flights() {
                 if (airportChoices.length > 1) {
                     setShowModal(true);
                 } else {
-                    // single-airport case, save it and let the trigger re-run the effect
                     const updated = airportNum === 0
                         ? { ...cookie, originAirport: airportChoices[0] }
                         : { ...cookie, destinationAirport: airportChoices[0] };
                     saveCookie(updated, "tripInfo");
                     setCookieData(updated);
-                    setSearchTrigger(t => t + 1);
+                    if (airportNum === 0) {
+                        setAirportNum(1);
+                    } else {
+                        setSearchTrigger(t => t + 1);
+                    }
                 }
             } catch (err) {
                 console.error("fetchFlightData failed:", err);
@@ -68,15 +71,15 @@ export default function Flights() {
 
     const handleFlightSubmission = () => {
         if (!selectedFlight || !cookieData) return;
-        const date = selectedFlight.legs[0].departure.split(" ")[0];
-        if (date === cookieData.dates.startDate) {
+        if (flightNum === 0) {
             saveCookie({ ...cookieData, flights: { ...cookieData.flights, departure: selectedFlight } }, "tripInfo");
+            setSelectedFlight(null);
             setFlightNum(1);
-        } else if (date === cookieData.dates.endDate) {
+        } else {
             saveCookie({ ...cookieData, flights: { ...cookieData.flights, return: selectedFlight } }, "tripInfo");
             navigate("/hotels");
         }
-    }
+    };
 
     const handleModalSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -105,7 +108,7 @@ export default function Flights() {
             <Navbar />
             <div className="flex flex-col items-center justify-center min-h-screen bg-cerulean">
                 <h1 className="text-4xl font-bold text-heading text-white mt-18">Flights for {flightNum === 0 ? cookieData?.dates.startDate : cookieData?.dates.endDate}</h1>
-                <p className="text-lg text-white my-4 font-semibold">Choose your flight!</p>
+                <p className="text-lg text-white my-4 font-semibold">Choose your flight! Please note, due to the nature of how flights are gathered, some requests might fail.</p>
 
                 {selectedFlight && (
                     <Button text="Continue" onClick={() => { handleFlightSubmission() }} colorway="primary" />
@@ -141,7 +144,7 @@ export default function Flights() {
                         </>)}
                     </div>
                 ) : (
-                    <p className="text-lg text-white mt-4">Loading flight data... This might take a minute!</p>
+                    <p className="text-lg text-white mt-4">Loading flight data... This might up to a minute for the server to open...</p>
                 )}
             </div>
         </>
